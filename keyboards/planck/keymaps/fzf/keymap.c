@@ -30,16 +30,15 @@ enum planck_layers {
 
 enum planck_keycodes {
   QWERTY = SAFE_RANGE,
-  MOVE,
   DVORAK
 };
 
+#define MOVE MO(_MOVE)
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
 #define ESCTRL MT(MOD_LCTL, KC_ESC)
 #define TG_INPT LGUI(LSFT(KC_9))
 
-#define MV _MOVE
 #define KC_MUP KC_MS_UP
 #define KC_MDN KC_MS_DOWN
 #define KC_MLFT KC_MS_LEFT
@@ -70,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,    KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
     ESCTRL,  KC_A,    KC_S,    KC_D,    KC_F,    KC_G,    KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_ENT ,
     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-    MO(MV),  _______, _______, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RGUI, _______, _______, MO(MV)
+    MOVE,    _______, _______, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RGUI, _______, _______, MOVE
 ),
 
 /* Lower
@@ -129,7 +128,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TAB,  KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,    KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSPC,
     ESCTRL,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,    KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_ENT,
     KC_LSFT, KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,    KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT,
-    MO(MV),  _______, _______, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RGUI, _______, _______, MO(MV)
+    MOVE,    _______, _______, KC_LGUI, LOWER,   KC_SPC,  KC_SPC,  RAISE,   KC_RGUI, _______, _______, MOVE
 ),
 
 /* Movement
@@ -187,12 +186,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case MOVE:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_MOVE);
-      }
-      return false;
-      break;
     case DVORAK:
       if (record->event.pressed) {
         set_single_persistent_default_layer(_DVORAK);
@@ -247,6 +240,6 @@ bool music_mask_user(uint16_t keycode) {
     case LOWER:
       return false;
     default:
-      return true;
+      return false;
   }
 }
